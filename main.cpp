@@ -2,6 +2,13 @@
 #include <QDir>
 #include <QtDebug>
 
+///
+/// \brief Generates a file with marked-for-translation strings
+/// \param context   : The category to put the strings under, to be shown in Linguist.
+///                    Ex. Collections, Fabrics, Machines...
+/// \param filePath  : The path to save the file
+/// \param names     : The list of the names to be translated
+///
 static void generate(const QString context, const QString &filePath, const QStringList &names) {
   QFile outFile(filePath);
 
