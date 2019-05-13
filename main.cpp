@@ -2,30 +2,23 @@
 #include <QDir>
 #include <QtDebug>
 
-int main(int argc, char *argv[])
-{
-
-  QString collectionPath = "/Users/efstragm/Developer/QtSnap/mydesigns";
-  QString filePath = "/Users/efstragm/Developer/QtSnap/collectionnames.cpp";
-
+static void generate(const QString context, const QString &filePath, const QStringList &names) {
   QFile outFile(filePath);
 
   if(outFile.open(QFile::WriteOnly | QFile::Text)) {
     QTextStream outStream(&outFile);
-    QDir collectionsDir(collectionPath);
 
     outStream << "// Auto-generated file" << endl;
     outStream << "#include <QtGlobal>" << endl << endl;
-    outStream << "const char** collectionNames() {" << endl;
+    outStream << "const char** names() {" << endl;
     outStream << "  static const char *names[] = {" << endl;
 
-    QFileInfoList collectionInfoList = collectionsDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+    for(int i=0; i<names.length(); i++) {
+      auto name= names[i];
 
-    for(int i=0; i<collectionInfoList.length(); i++) {
-      QFileInfo collection = collectionInfoList[i];
-      outStream << "    QT_TRANSLATE_NOOP(\"Collections\", ";
-      outStream << "\"" << collection.fileName() << "\")";
-      if(i < collectionInfoList.length()-1)
+      outStream << QString("    QT_TRANSLATE_NOOP(\"%1\", ").arg(context);
+      outStream << QString("\"%1\")").arg(name);
+      if(i < names.length()-1)
         outStream << ",";
       outStream << endl;
     }
@@ -37,5 +30,16 @@ int main(int argc, char *argv[])
     outStream.flush();
     outFile.close();
   }
-
 }
+
+int main(int argc, char *argv[]) {
+  QString collectionPath = "/Users/efstragm/Developer/QtSnap/mydesigns";
+  QString filePath       = "/Users/efstragm/Developer/QtSnap/collectionnames.cpp";
+
+  QDir collectionsDir(collectionPath);
+  auto collectionNames = collectionsDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+  generate("Collections", filePath, collectionNames);
+}
+
+
