@@ -1,4 +1,5 @@
 QT -= gui
+QT += core sql
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -8,6 +9,7 @@ CONFIG -= app_bundle
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_SQL_LIB QT_DLL
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -16,4 +18,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp
+
+HEADERS +=
 
