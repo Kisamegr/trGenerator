@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
   {
     //QSqlDatabase::addDatabase("QSQLITE"); // initialization
     collectionNames = getDataFromDB(sourcePath);
-    generate("Machines_Comapnies", destFile, collectionNames);
+    generate("Machines_Companies", destFile, collectionNames);
   }
 
    return 0;
