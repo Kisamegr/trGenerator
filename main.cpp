@@ -39,7 +39,25 @@ static void generate(const QString context, const QString &filePath, const QStri
   }
 }
 
-int main(int argc, char *argv[]) {
+void generateFabrics() {
+  QString collectionPath = "/Users/efstragm/Developer/Drawings/DataFiles/Fabrics";
+  QString filePath       = "/Users/efstragm/Developer/Drawings/DraWings/fabricnames.h";
+
+  QDir fabricsDir(collectionPath);
+  auto fabricFullNames = fabricsDir.entryInfoList({ "*.fabric" }, QDir::Files);
+
+  QStringList fabricNames;
+
+  std::transform(
+      fabricFullNames.cbegin(), fabricFullNames.cend(), std::back_inserter(fabricNames), [](const QFileInfo &info) {
+        auto name = info.baseName();
+        return name.replace("_", " ").trimmed();
+      });
+
+  generate("Fabrics", filePath, fabricNames);
+}
+
+void generateCollections() {
   QString collectionPath = "/Users/efstragm/Developer/QtSnap/mydesigns";
   QString filePath       = "/Users/efstragm/Developer/QtSnap/collectionnames.cpp";
 
@@ -47,6 +65,12 @@ int main(int argc, char *argv[]) {
   auto collectionNames = collectionsDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
   generate("Collections", filePath, collectionNames);
+}
+
+
+int main(int argc, char *argv[]) {
+  //  generateCollections()
+  generateFabrics();
 }
 
 
